@@ -197,9 +197,5 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/improvement`)
 5. Open a Pull Request
 
-## 📝 License
-
-[Add your license here - e.g., MIT License]
-
 ## 👥 Authors
 SAUMYA JAIN
