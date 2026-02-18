@@ -1,6 +1,6 @@
-# Customer Churn Prediction - Simple Guide
+# Customer Churn Prediction 
 
-Predict which customers will churn using machine learning. This project trains both baseline and advanced models, saves them, and generates results automatically.
+Predict which customers will churn . This project trains both baseline and advanced models, saves them, and generates results automatically.
 
 ## Quick Start
 
