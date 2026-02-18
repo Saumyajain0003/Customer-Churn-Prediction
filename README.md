@@ -1,220 +1,131 @@
-# Customer Churn Prediction
+# Customer Churn Prediction - Simple Guide
 
-A production-ready machine learning pipeline to predict customer churn using classification models, with a clean modular architecture ready for GitHub and team collaboration.
+Predict which customers will churn using machine learning. This project trains both baseline and advanced models, saves them, and generates results automatically.
 
-## 🎯 Project Overview
+## Quick Start
 
-Customer churn prediction helps businesses identify at-risk customers and implement retention strategies. This project implements a complete, end-to-end ML pipeline — from raw data ingestion to saved model artifacts — with structured logging, a CLI interface, and a reusable preprocessing pipeline.
-
-**Key Features:**
-- Modular `src/` package with clean separation of concerns
-- Centralized config (`src/config.py`) — no hardcoded paths or hyperparameters
-- Structured logging throughout the pipeline
-- CLI interface via `argparse` for flexible execution
-- ROC curves saved as PNG files (CI/script-safe — no `plt.show()`)
-- Results saved to `results/` as both CSV and JSON
-- Trained model pipelines saved to `models/` as `.joblib` files
-
-## 📁 Project Structure
-
-```
-customer-churn-prediction/
-├── data/
-│   └── Churn_Modelling.csv          # Raw customer churn dataset
-├── models/                           # Saved model pipelines (.joblib)
-│   └── .gitkeep
-├── notebooks/
-│   ├── eda.ipynb                     # Exploratory Data Analysis
-│   ├── feature_engineering.ipynb     # Feature engineering experiments
-│   ├── models.ipynb                  # Baseline model training
-│   ├── advancedmodels.ipynb          # XGBoost, LightGBM, CatBoost
-│   └── preprocessing_pipeline.joblib # Saved preprocessing pipeline (generated)
-├── results/                          # Generated evaluation outputs
-│   ├── results.csv                   # Metrics comparison table
-│   ├── results.json                  # Metrics in JSON format
-│   ├── plots/                        # ROC curve PNGs
-│   └── .gitkeep
-├── src/
-│   ├── __init__.py                   # Marks src as a Python package
-│   ├── config.py                     # Centralized paths & hyperparameters
-│   ├── data_loader.py                # Data ingestion & target detection
-│   ├── preprocessing.py              # Scikit-learn preprocessing pipeline
-│   ├── trainer.py                    # Model training & persistence
-│   ├── evaluation.py                 # Metrics computation & ROC plots
-│   └── results.py                    # Results saving utilities
-├── main.py                           # CLI entry point — runs the full pipeline
-├── requirements.txt                  # Python dependencies
-├── .gitignore                        # Excludes cache, models, .DS_Store, etc.
-└── README.md
-```
-
-## 📊 Dataset
-
-The project uses `Churn_Modelling.csv` containing 10,000 bank customer records:
-
-| Feature | Type | Description |
-|---------|------|-------------|
-| CreditScore | Numeric | Customer credit score |
-| Geography | Categorical | Country (France / Germany / Spain) |
-| Gender | Categorical | Male / Female |
-| Age | Numeric | Customer age |
-| Tenure | Numeric | Years as a customer |
-| Balance | Numeric | Account balance |
-| NumOfProducts | Numeric | Number of bank products |
-| HasCrCard | Numeric | Has credit card (0/1) |
-| IsActiveMember | Numeric | Active member (0/1) |
-| EstimatedSalary | Numeric | Estimated annual salary |
-| **Exited** | **Target** | **Churned (1) / Retained (0)** |
-
-## 🛠️ Installation
-
-### Prerequisites
-- Python 3.10+
-- pip
-
-### Setup
-
+### 1. Install Dependencies
 ```bash
-# 1. Clone the repository
-git clone <repository-url>
-cd customer-churn-prediction
-
-# 2. Create a virtual environment
-python -m venv venv
-source venv/bin/activate        # macOS/Linux
-# venv\Scripts\activate         # Windows
-
-# 3. Install dependencies
 pip install -r requirements.txt
 ```
 
-## 🚀 Usage
-
-### Running the Full Pipeline (CLI)
-
+### 2. Run the Pipeline
 ```bash
-# Default — uses paths from src/config.py
 python main.py
-
-# Custom paths
-python main.py \
-  --data-path data/Churn_Modelling.csv \
-  --models-dir models \
-  --results-dir results \
-  --plots-dir results/plots \
-  --log-level INFO
 ```
 
-### CLI Arguments
+This will:
+- Load the data
+- Preprocess it (scaling, encoding)
+- Train 4 models:
+  - **Logistic Regression** (baseline - fast & interpretable)
+  - **Decision Tree** (baseline - easy to understand)
+  - **Random Forest** (advanced - ensemble method)
+  - **XGBoost** (advanced - powerful gradient boosting)
+- Save trained models to `models/`
+- Save results to `results/results.csv`
+- Save ROC curves to `results/plots/`
 
-| Argument | Default | Description |
-|----------|---------|-------------|
-| `--data-path` | `data/Churn_Modelling.csv` | Path to input CSV |
-| `--models-dir` | `models/` | Directory to save model `.joblib` files |
-| `--results-dir` | `results/` | Directory to save CSV/JSON results |
-| `--plots-dir` | `results/plots/` | Directory to save ROC curve PNGs |
-| `--log-level` | `INFO` | Logging verbosity (`DEBUG/INFO/WARNING/ERROR`) |
+### 3. View Results
+Check `results/results.csv` for model performance metrics (Accuracy, Precision, Recall, F1-Score, ROC-AUC).
 
-### Running Notebooks
+## Project Structure
+
+```
+.
+├── data/
+│   └── Churn_Modelling.csv          ← Your raw data
+├── models/                           ← Saved trained models (.joblib)
+├── results/                          ← Performance metrics & plots
+├── src/
+│   ├── config.py                    ← Configuration & hyperparameters
+│   ├── data_loader.py               ← Load & prepare data
+│   ├── preprocessing.py             ← Data preprocessing pipeline
+│   ├── trainer.py                   ← Train & save models
+│   ├── evaluation.py                ← Calculate metrics & ROC curves
+│   └── results.py                   ← Save results
+├── main.py                          ← Run the full pipeline
+└── requirements.txt                 ← Python packages
+```
+
+## CLI Options
 
 ```bash
-jupyter notebook
+# Use custom data path
+python main.py --data-path path/to/your/data.csv
+
+# Specify output directories
+python main.py --models-dir ./my_models --results-dir ./my_results
+
+# Adjust logging verbosity
+python main.py --log-level DEBUG
 ```
 
-Execute notebooks in order:
-1. `eda.ipynb` — Explore data distributions and correlations
-2. `feature_engineering.ipynb` — Engineer and transform features
-3. `models.ipynb` — Train and evaluate baseline models
-4. `advancedmodels.ipynb` — XGBoost, LightGBM, CatBoost
+## Making Predictions
 
-### Using Saved Artifacts
+To predict on new data:
 
 ```python
 import joblib
+import pandas as pd
 
-# Load a trained model pipeline
-pipeline = joblib.load("models/logisticregression_pipeline.joblib")
+# Load a trained model
+model = joblib.load('models/randomforest_pipeline.joblib')
 
-# Predict on new data (raw, unprocessed DataFrame)
-predictions = pipeline.predict(X_new)
-probabilities = pipeline.predict_proba(X_new)[:, 1]
+# Load new data (must have same features as training data)
+new_data = pd.read_csv('new_customers.csv')
 
-# Load just the preprocessing pipeline
-preprocessor = joblib.load("notebooks/preprocessing_pipeline.joblib")
-X_processed = preprocessor.transform(X_new)
+# Make predictions
+predictions = model.predict(new_data)
+probabilities = model.predict_proba(new_data)[:, 1]  # Churn probability
 ```
 
-## 🤖 Models
+## Model Explanations
 
-### Baseline Models
+| Model | Type | When to Use | Pros | Cons |
+|-------|------|-------------|------|------|
+| **Logistic Regression** | Baseline | Quick baseline | Fast, interpretable, stable | Lower accuracy |
+| **Decision Tree** | Baseline | Interpretability | Very explainable, no scaling needed | Overfitting risk |
+| **Random Forest** | Advanced | Good default | High accuracy, robust | Less interpretable |
+| **XGBoost** | Advanced | Complex data | Highest accuracy, fast | More complex tuning |
 
-| Model | Strengths | Notes |
-|-------|-----------|-------|
-| **Logistic Regression** | Fast, interpretable, good baseline | `liblinear` solver, class-balanced |
-| **Decision Tree** | Non-linear, feature importance | `max_depth=5` to prevent overfitting |
+## Hyperparameters
 
-### Pipeline Architecture
+Edit `src/config.py` to change:
+- Model hyperparameters (learning rates, tree depth, etc.)
+- Train/test split ratio (default: 80/20)
+- Random seed (for reproducibility)
 
-Each model is wrapped in a full sklearn `Pipeline`:
-```
-Raw DataFrame → ColumnTransformer (scale numerics, encode categoricals) → Classifier
-```
+## Output Files
 
-This means the saved `.joblib` file handles all preprocessing automatically — just call `.predict(X_raw)`.
+- `results/results.csv` - Model metrics comparison
+- `results/plots/roc_*.png` - ROC curves for each model
+- `models/*_pipeline.joblib` - Saved trained models (ready for predictions)
 
-## 📈 Evaluation Metrics
+## Troubleshooting
 
-| Metric | Description | Priority |
-|--------|-------------|----------|
-| **Recall** | Fraction of actual churners caught | ⭐ Primary |
-| **F1-Score** | Harmonic mean of precision & recall | High |
-| **ROC-AUC** | Discrimination ability | High |
-| **Precision** | Fraction of predicted churners that are real | Medium |
-| **Accuracy** | Overall correctness | Low (misleading with imbalance) |
-
-> **Why Recall?** Missing a churner (false negative) is more costly than a false alarm. Recall is prioritized to maximize retention campaign coverage.
-
-## 📊 Outputs
-
-After running `python main.py`:
-
-```
-results/
-├── results.csv          # Model comparison table
-├── results.json         # Same data in JSON format
-└── plots/
-    ├── roc_logisticregression.png
-    └── roc_decisiontree.png
-
-models/
-├── logisticregression_pipeline.joblib
-└── decisiontree_pipeline.joblib
+**"Module not found" error?**
+```bash
+pip install -r requirements.txt
 ```
 
-## 🔮 Next Steps
+**"No module named 'xgboost'"?**
+```bash
+pip install xgboost  # Optional - XGBoost will be skipped if not installed
+```
 
-- [ ] Add cross-validation (StratifiedKFold)
-- [ ] Hyperparameter tuning (GridSearchCV / Optuna)
-- [ ] Advanced models: XGBoost, LightGBM, CatBoost (`advancedmodels.ipynb`)
-- [ ] SHAP values for model explainability
-- [ ] SMOTE / class-weight tuning for imbalance
-- [ ] REST API with FastAPI for model serving
-- [ ] Unit tests for `src/` modules
-- [ ] GitHub Actions CI workflow
+**Want to change features or preprocessing?**
+Edit `src/preprocessing.py` to modify the pipeline.
 
-## 🤝 Contributing
+## For Your Project Report
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-improvement`
-3. Commit your changes: `git commit -am 'Add improvement'`
-4. Push: `git push origin feature/my-improvement`
-5. Open a Pull Request
+- **Models Used**: Logistic Regression, Decision Tree, Random Forest, XGBoost
+- **Dataset**: Customer churn data with customer features
+- **Approach**: Standard ML pipeline with train/test split (80/20)
+- **Evaluation**: Accuracy, Precision, Recall, F1-Score, ROC-AUC
+- **Best Model**: Check `results/results.csv` for performance
 
-## 📝 License
+---
 
-MIT License — see `LICENSE` for details.
-
-## 👤 Author
-
-**Saumya Jain**
->>>>>>> e42f58a (adding more models)
+### AUTHOR:
+SAUMYA JAIN
