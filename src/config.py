@@ -17,6 +17,7 @@ DATA_FILE = DATA_DIR / "Churn_Modelling.csv"
 # ── Train / Test Split ────────────────────────────────────────────────────────
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
+CROSS_VALIDATION_FOLDS = 5  # Number of folds for k-fold cross-validation
 
 # ── Model Hyperparameters ─────────────────────────────────────────────────────
 LOGISTIC_REGRESSION_PARAMS = {
@@ -30,6 +31,23 @@ DECISION_TREE_PARAMS = {
     "class_weight": "balanced",
     "max_depth": 5,
     "random_state": RANDOM_STATE,
+}
+
+RANDOM_FOREST_PARAMS = {
+    "n_estimators": 100,
+    "max_depth": 10,
+    "class_weight": "balanced",
+    "random_state": RANDOM_STATE,
+    "n_jobs": -1,
+}
+
+XGBOOST_PARAMS = {
+    "n_estimators": 100,
+    "learning_rate": 0.1,
+    "max_depth": 5,
+    "random_state": RANDOM_STATE,
+    "use_label_encoder": False,
+    "eval_metric": "logloss",
 }
 
 # ── Results ───────────────────────────────────────────────────────────────────
