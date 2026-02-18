@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Saved models & pipelines (large binary files)
+*.joblib
+*.pkl
+*.pickle
+
+# Results (generated outputs)
+results/*.csv
+results/*.json
+
+# Data (large files — keep in cloud storage)
+# Uncomment the next line if you don't want to push raw data
+# data/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code
+.vscode/settings.json
+.vscode/launch.json
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
