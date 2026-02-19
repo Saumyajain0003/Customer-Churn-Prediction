@@ -117,7 +117,7 @@ pip install xgboost  # Optional - XGBoost will be skipped if not installed
 **Want to change features or preprocessing?**
 Edit `src/preprocessing.py` to modify the pipeline.
 
-## For Your Project Report
+## Project Report
 
 - **Models Used**: Logistic Regression, Decision Tree, Random Forest, XGBoost
 - **Dataset**: Customer churn data with customer features
