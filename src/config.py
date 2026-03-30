@@ -11,8 +11,11 @@ MODELS_DIR = ROOT_DIR / "models"
 RESULTS_DIR = ROOT_DIR / "results"
 NOTEBOOKS_DIR = ROOT_DIR / "notebooks"
 
-# ── Data ─────────────────────────────────────────────────────────────────────
+# ── Data & Database ────────────────────────────────────────────────────────────
 DATA_FILE = DATA_DIR / "Churn_Modelling.csv"
+DB_PATH = DATA_DIR / "churn.db"
+QUERIES_DIR = ROOT_DIR / "src" / "queries"
+FEATURE_QUERY_PATH = QUERIES_DIR / "feature_engineering.sql"
 
 # ── Train / Test Split ────────────────────────────────────────────────────────
 TEST_SIZE = 0.2

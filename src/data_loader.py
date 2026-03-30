@@ -1,7 +1,9 @@
+import sqlite3
 import pandas as pd
 import numpy as np
 import logging
 from pathlib import Path
+from src.config import DB_PATH, FEATURE_QUERY_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -12,30 +14,38 @@ _DROP_COLS = ["RowNumber", "CustomerId", "Surname"]
 _TARGET_CANDIDATES = ["Exited", "Churn", "churn", "is_churn", "IsChurn"]
 
 
-def load_data(filepath: str | Path) -> pd.DataFrame:
+def load_data(filepath: str | Path = None) -> pd.DataFrame:
     """
-    Load and clean the churn dataset from a CSV file.
-
-    Steps:
-    - Drops unique identifier columns (RowNumber, CustomerId, Surname)
-    - Drops any leading unnamed index columns
+    Load data by executing the feature engineering SQL query against the SQLite database.
 
     Args:
-        filepath: Path to the CSV file.
+        filepath: Legacy argument (kept for compatibility, but ignored in favor of DB_PATH).
 
     Returns:
-        Cleaned DataFrame.
+        Cleaned DataFrame containing engineered features from the database.
 
     Raises:
-        FileNotFoundError: If the file does not exist.
+        FileNotFoundError: If the DB or SQL query file is missing.
     """
-    path = Path(filepath)
-    if not path.exists():
-        raise FileNotFoundError(f"Data file not found at: {path.resolve()}")
+    if not DB_PATH.exists():
+        raise FileNotFoundError(f"Database not found at: {DB_PATH}. Did you run seed_db.py?")
+        
+    if not FEATURE_QUERY_PATH.exists():
+        raise FileNotFoundError(f"SQL query not found at: {FEATURE_QUERY_PATH}")
 
-    logger.info(f"Loading data from {path.resolve()}")
-    df = pd.read_csv(path)
-    logger.info(f"Loaded {len(df):,} rows × {len(df.columns)} columns")
+    logger.info(f"Connecting to SQLite DB at {DB_PATH.resolve()}")
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        
+        # Read the advanced feature engineering query
+        with open(FEATURE_QUERY_PATH, 'r') as file:
+            query = file.read()
+            
+        logger.info("Executing SQL feature engineering query...")
+        df = pd.read_sql(query, conn)
+        logger.info(f"Loaded {len(df):,} rows × {len(df.columns)} columns from database")
+    finally:
+        conn.close()
 
     # Drop unnamed leading index column if present
     if df.columns[0] == "" or str(df.columns[0]).startswith("Unnamed"):
