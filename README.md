@@ -5,15 +5,11 @@
 
 <br>
 
-## 📸 Proof of Execution
-
-*This project is fully operational. See the terminal execution logs below as proof of backend data engineering and ML pipeline stability.*
-
 ### 1. Database Engineering & Transformation
-*(screenshots/seed_data.png)*
+![seeded data](screenshots/seed_data.png)
 
 ### 2. Machine Learning Training & Model Selection
-*(screenshots/main.png)*
+![ML training](screenshots/main.png)
 
 <br>
 
