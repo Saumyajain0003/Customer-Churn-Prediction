@@ -5,7 +5,12 @@ This simulates a real-world relational database environment for the data science
 import sqlite3
 import pandas as pd
 import logging
+import sys
+import os
 from pathlib import Path
+
+# Fix 'ModuleNotFoundError' when running from root directory
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import DATA_FILE, ROOT_DIR
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)-8s | %(message)s")
